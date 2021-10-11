@@ -88,6 +88,7 @@ class CalculatorFunctions:
 
     def evaluate_expression(self):
         postfix = self.expression_to_postfix()
+        postfix_example = self.expression_to_postfix()
         result = deque()
         while len(postfix) > 0:
             if self.isdigit(postfix[0]):
@@ -97,7 +98,7 @@ class CalculatorFunctions:
                 self.y = int(result.pop())
 
                 result.append(self.arithmetic_functions[postfix.popleft()]())
-        return result.pop()
+        return str(result.pop()) + f'\nPostfix notation example: {" ".join(postfix_example)}'
 
     def multiply(self):
         return self.x * self.y
@@ -127,8 +128,7 @@ class CalculatorFunctions:
                 postfix.append(infix.popleft())
             elif '(' in infix[0]:
                 finder = ' '.join(infix).replace(')', '', infix[0].count('(') - 1).split()
-                selection = list(infix)[0:int(''.join([str(i) for i in range(len(infix)) if ')' in finder[i]][0]))
-                                            + 1]
+                selection = list(infix)[0:int(''.join([str(i) for i in range(len(infix)) if ')' in finder[i]][0])) + 1]
                 selection = [selection[0].replace('(', '', 1)] + selection[1:len(selection) - 1] + \
                             [selection[len(selection) - 1].replace(')', '', 1)]
                 selection_postfix = self.expression_to_postfix(selection)
@@ -204,7 +204,7 @@ class CalculatorFunctions:
 
 def run_calculator():
     while True:
-        c = CalculatorFunctions(input())
+        c = CalculatorFunctions(input('Enter an expression or var declaration: '))
         print(c.evaluate_expression())
 
 
