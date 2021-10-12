@@ -12,6 +12,8 @@ class CalculatorFunctions:
     order_of_operations = {'+': 0, '-': 0, '*': 1, '/': 1, '^': 2}
 
     def __init__(self, input_):
+        '''Input_ takes a string in the form of an expression or a variable declaration and this expression is then used 
+           in the functions for the class'''
         contains_letters = any([input_[i].isalpha() for i in range(len(input_))])
         if not contains_letters and input_ != '':
             self.expression = input_
@@ -46,6 +48,7 @@ class CalculatorFunctions:
                                      '+': self.add, '-': self.subtract}
 
     def var_in_expression(self):
+        '''Checks if vars in an expression are known'''
         possible_vars = {i for i in self.expression.split() if all([char.isalpha() for char in i])}
         all_vars = {i for i in CalculatorFunctions.vars}
         if all([i in all_vars for i in possible_vars]):
@@ -55,10 +58,12 @@ class CalculatorFunctions:
             run_calculator()
 
     def sub_vars(self):
+        '''Substitutes variables into an expression'''
         for var in CalculatorFunctions.vars:
             self.expression = self.expression.replace(var, CalculatorFunctions.vars[var])
 
     def read_vars(self):
+        '''Reads a variable declaration and then adds it to the vars for the class'''
         self.terms = self.var_declaration.split('=')
         if self.invalid_identifier_check():
             print(self.INVALID_IDENTIFIER)
@@ -87,8 +92,9 @@ class CalculatorFunctions:
         return not all([i.isalpha() for i in self.terms[0]])
 
     def evaluate_expression(self):
+        '''Evaluates the postfix expression defined in the __init__ method for this class.'''
         postfix = self.expression_to_postfix()
-        postfix_example = self.expression_to_postfix()
+        postfix_example = list(postfix)
         result = deque()
         while len(postfix) > 0:
             if self.isdigit(postfix[0]):
@@ -116,6 +122,11 @@ class CalculatorFunctions:
         return self.y - self.x
 
     def expression_to_postfix(self, expression=None):
+        '''Takes an infix expression defined in __init_ and converts it to postfix notation. 
+           You must make an object in order to use this function.
+           
+           The "expression" parameter of this function is used recursively to evaluate parenthesis but
+           It can also be used once an expression object is defined or by defining self as a static class.'''
         postfix = deque()
         infix = deque(self.expression_to_list(self.expression)) if expression is None else deque(expression)
         operations = deque()
@@ -150,6 +161,8 @@ class CalculatorFunctions:
         return postfix
 
     def expression_to_list(self, expression):
+        '''Converts expression to a list
+           Can be used outside of an object in the form "CalculatorFunctions.expression_to_list(CalculatorFunctions, "1+2")"'''
         updated_expression = list(expression)
         difference = 0
         for i in range(len(list(expression))):
