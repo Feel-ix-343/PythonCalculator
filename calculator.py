@@ -141,7 +141,7 @@ class CalculatorFunctions:
                 finder = ' '.join(infix).replace(')', '', infix[0].count('(') - 1).split()
                 selection = list(infix)[0:int(''.join([str(i) for i in range(len(infix)) if ')' in finder[i]][0])) + 1]
                 selection = [selection[0].replace('(', '', 1)] + selection[1:len(selection) - 1] + \
-                            [selection[len(selection) - 1].replace(')', '', 1)]
+                            [selection[-1].replace(')', '', 1)]
                 selection_postfix = self.expression_to_postfix(selection)
                 for term in selection_postfix:
                     postfix.append(str(term))
